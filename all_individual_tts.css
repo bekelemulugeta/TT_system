@@ -1,0 +1,107 @@
+/* General styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+/* Scroll box styles */
+.scroll-box {
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Button styling */
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Report table styling */
+#report {
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+#report th, #report td {
+    padding: 10px;
+    text-align: center;
+}
+
+/* Error message styling */
+.error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Responsive styling */
+@media screen and (max-width: 768px) {
+    /* Stack table headers and content on smaller screens */
+    table, th, td {
+        display: block;
+        width: 100%;
+    }
+
+    th {
+        text-align: left;
+        background-color: #f4f4f4;
+        padding: 10px;
+    }
+
+    td {
+        text-align: left;
+        padding: 8px;
+        border: none;
+    }
+
+    td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: inline-block;
+        width: 100px;
+    }
+
+    /* Adjust scroll-box max width for smaller screens */
+    .scroll-box {
+        max-width: 100%;
+        overflow: hidden;
+    }
+
+    /* Button size adjustment */
+    button {
+        width: 100%;
+        padding: 12px;
+    }
+}
+
+/* Add some padding for small screens */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+}

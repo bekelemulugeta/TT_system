@@ -1,0 +1,249 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* This will center the container horizontally */
+    min-height: 100vh; /* Ensures vertical centering */
+}
+
+.container {
+    width: 95%;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-height: 580px;
+    max-width: 1250px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center; /* This will center the container horizontally */
+   
+}
+
+h1, h2, h3 {
+    width: 100%;
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+h1:hover, h2:hover, h3:hover {
+    background-color: #0056b3;
+}
+
+/* Form Container */
+.form-container {
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    max-height: 420px;
+    max-width: 800px;
+
+}
+
+/* Input Fields */
+form select, 
+form input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+form input[type="submit"] {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+form input[type="submit"]:hover {
+    background: #0056b3;
+}
+
+/* Table Container */
+.table-container {
+   
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-height: 370px;
+    max-width: 1400px;
+}
+
+
+/* Table styling */
+#tblData {
+    width: 100%;
+    border-collapse: collapse;
+    max-height: 350px;
+    display: block;
+    white-space: nowrap;
+    overflow: auto;
+}
+
+#tblData th, #tblData td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#tblData th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* Table row hover effect */
+#tblData tbody,#tblData tr:hover {
+    background-color: #f1f1f1; /* Light gray background */
+    cursor: pointer; /* Changes cursor to pointer */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Optional: Add hover effect to table header */
+#tblData thead,#tblData tr:hover {
+    background-color: #007bff;
+}
+
+/* Buttons */
+button.btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+}
+
+button.btn-danger {
+    background-color: #dc3545;
+}
+
+button.btn-danger:hover {
+    background-color: #c82333;
+}
+
+button.btn-primary {
+    background-color: #007bff;
+}
+
+button.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+button.btn-secondary {
+ background-color: #ccc;
+    color: white;
+}
+
+button.btn-secondary:hover {
+  background-color: #0056b3;
+}
+
+.btn-success {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+
+
+.btn-success:hover {
+    background-color: #0056b3;
+}
+
+
+/* Export Button */
+.export-button {
+    margin-top: 20px;
+}
+
+/* Edit Form */
+#editFormContainer {
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+/* Close Button */
+#editFormContainer .x-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: transparent;
+    border: none;
+    font-size: 36px;
+    cursor: pointer;
+    color: red;
+    font-weight: bold;
+}
+
+/* Form Fields */
+#editFormContainer label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+#editFormContainer input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+
+.container{
+    margin-bottom: 20px;
+}
+
+    h1, h2, h3 {
+        font-size: 18px;
+    }
+
+    .form-container,
+    .table-container,
+    #editFormContainer {
+        width: 95%;
+        margin-top: 0px;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    table th, table td {
+        padding: 8px;
+    }
+}

@@ -1,0 +1,151 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* This will center the container horizontally */
+    min-height: 100vh; /* Ensures vertical centering */
+}
+
+.container {
+    width: 100%;
+    max-width: 500px;
+    max-height: 500px;
+    background-color: #fff;
+    padding: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1, h3, h2 {
+    color: #fff; /* White text for better contrast */
+    font-size: 24px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Adds spacing around the text */
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+h1, h3, h2:hover {
+    background-color: #0056b3; /* Slightly darker blue for hover effect */
+}
+
+label {
+  display: inline-block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #555;
+}
+
+input, select {
+
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+/* Input Fields */
+.textbox {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+.textbox:focus {
+    border-color: #0056b3;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 86, 179, 0.3);
+}
+
+/* Submit Button */
+#but_submit {
+    width: 100%;
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    padding: 14px;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+    margin-top: 15px;
+    border-radius: 6px;
+}
+
+#but_submit:hover {
+    background: #004494;
+    transform: scale(1.05);
+}
+
+#but_submit:active {
+    background: #003366;
+    transform: scale(0.98);
+}
+
+/* Success and Error Messages */
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .container {
+        margin: 0 0;
+        width: 95%;
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    .textbox {
+        font-size: 15px;
+        padding: 12px;
+    }
+
+    #but_submit {
+        font-size: 16px;
+        padding: 12px;
+    }
+}

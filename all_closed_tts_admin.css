@@ -1,0 +1,163 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* This will center the container horizontally */
+    min-height: 100vh; /* Ensures vertical centering */
+}
+
+.container {
+    width: 80%; /* Adjust width to avoid full screen stretch */
+    max-width: 1200px; /* Prevents too wide layout on large screens */
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+h1, h3, h2 {
+    color: #fff; /* White text for better contrast */
+    font-size: 24px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Adds spacing around the text */
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+h1, h3, h2:hover {
+    background-color: #0056b3; /* Slightly darker blue for hover effect */
+}
+/* Table styling */
+#tblData {
+    width: 100%;
+    border-collapse: collapse;
+    max-height: 400px;
+    display: block;
+    white-space: nowrap;
+    overflow: auto;
+}
+
+#tblData th, #tblData td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#tblData th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* Table row hover effect */
+#tblData tbody,#tblData tr:hover {
+    background-color: #f1f1f1; /* Light gray background */
+    cursor: pointer; /* Changes cursor to pointer */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Optional: Add hover effect to table header */
+#tblData thead,#tblData tr:hover {
+    background-color: white;
+}
+
+
+
+
+/* Clickable cells */
+.clickable {
+    cursor: pointer;
+    color: #007BFF;
+    text-decoration: underline;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    width: 90%;
+    max-height: 80vh;
+    padding: 20px;
+    max-width: 500px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+    overflow: auto;
+    
+    
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: red;
+}
+
+/* Responsive table */
+@media screen and (max-width: 768px) {
+    .container {
+        margin-top: 0px;
+
+    }
+    #tblData thead {
+        display: none;
+    }
+    #tblData, #tblData tbody, #tblData tr, #tblData td {
+        display: block;
+        width: 100%;
+    }
+    #tblData tr {
+        margin-bottom: 10px;
+        border: 1px solid #ddd;
+        padding: 10px;
+    }
+    #tblData td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    #tblData td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+}
+
+/* Export button styling */
+.export-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+.export-btn button {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.export-btn button:hover {
+    background-color: #218838;
+}

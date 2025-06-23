@@ -1,0 +1,190 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* This will center the container horizontally */
+    min-height: 100vh; /* Ensures vertical centering */
+}
+
+.container {
+    width: 90%; /* Adjust width to avoid full screen stretch */
+    max-width: 900px; /* Prevents too wide layout on large screens */
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+    max-height: 575px;
+
+}
+
+h1, h3, h2 {
+    color: #fff; /* White text for better contrast */
+    font-size: 24px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Adds spacing around the text */
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+h1, h3, h2:hover {
+    background-color: #0056b3; /* Slightly darker blue for hover effect */
+}
+
+.form-inline {
+ width: 100%;
+    margin-bottom: 20px;
+}
+
+
+.form-inline input, .form-inline button {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Table styling */
+#tblData {
+    width: 100%;
+    border-collapse: collapse;
+    max-height: 420px;
+    display: block;
+    white-space: nowrap;
+    overflow: auto;
+    margin: auto;
+    align-items: center;
+}
+
+#tblData th, #tblData td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+#tblData th {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-delete {
+    background-color: red;
+}
+
+.btn-delete:hover {
+    background-color: darkred;
+}
+
+.btn-edit {
+    background-color: orange;
+}
+
+.btn-edit:hover {
+    background-color: darkorange;
+}
+.btn-secondary {
+    background-color: #ccc;
+    color: white;
+}
+
+
+/* Edit Form Styling */
+#editFormContainer {
+    position: fixed;
+    top: 65px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it's on top */
+    display: none; /* Initially hidden */
+    max-width: 500px;
+    margin: 20px auto; /* Center the form */
+    overflow-y: auto; /* Enable vertical scrolling for overflow */
+}
+
+/* Form Fields Styling */
+#editFormContainer label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+#editFormContainer input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* X button styling */
+#editFormContainer .x-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: transparent;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: red; /* Make the X button red */
+    font-weight: bold;
+}
+
+.alert {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* Responsive Styling for Small Screens */
+@media screen and (max-width: 768px) {
+    .container {
+    padding: 15px;
+        margin-top: 20px;
+        margin-bottom: 50px;
+ 
+}
+
+    #editFormContainer {
+        width: 95%;
+    }
+
+    #tblData {
+        font-size: 12px;
+    }
+
+    .export-button button {
+        padding: 8px 15px;
+    }
+}

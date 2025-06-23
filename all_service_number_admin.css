@@ -1,0 +1,75 @@
+
+        /* Your custom CSS */
+        .table-container {
+            margin: 20px auto;
+            width: 90%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        button {
+            cursor: pointer;
+            padding: 8px 15px;
+            margin: 5px;
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #c9302c;
+        }
+
+ #editForm {
+              position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it's on top */
+    display: none; /* Initially hidden */
+    max-width: 500px;
+    margin: 20px auto; /* Center the form */
+        }
+
+        .form-container input,
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            padding: 12px;
+        }
+
+        .form-container input[type="submit"]:hover {
+            background-color: #0056b3;
+        }

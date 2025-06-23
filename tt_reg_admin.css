@@ -1,0 +1,241 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* This will center the container horizontally */
+    min-height: 100vh; /* Ensures vertical centering */
+}
+
+.container {
+    width: 80%; /* Adjust width to avoid full screen stretch */
+    max-width: 1100px; /* Prevents too wide layout on large screens */
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+h1, h3, h2 {
+    color: #fff; /* White text for better contrast */
+    font-size: 24px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Adds spacing around the text */
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+h1, h3, h2:hover {
+    background-color: #0056b3; /* Slightly darker blue for hover effect */
+}
+
+/* Search Section */
+.search-input {
+    width: 40%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-width: 500px;
+}
+
+.search-button {
+    padding: 10px 15px;
+    background-color: #5cb85c;
+    color: white;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.search-button:hover {
+     background-color: #007bff;
+}
+
+/* Table styling */
+#tblData {
+    width: 100%;
+    border-collapse: collapse;
+    max-height: 300px;
+    display: block;
+    white-space: nowrap;
+    overflow: auto;
+}
+
+#tblData th, #tblData td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#tblData th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+/* Table row hover effect */
+#tblData tbody,#tblData tr:hover {
+    background-color: #f1f1f1; /* Light gray background */
+    cursor: pointer; /* Changes cursor to pointer */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/* Optional: Add hover effect to table header */
+#tblData thead,#tblData tr:hover {
+    background-color: #007bff;
+}
+
+
+/* Form Styles */
+#search {
+    margin-top: 30px;
+}
+
+input[type="text"], select, input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Success and Error Messages */
+.error, .success {
+    margin-bottom: 5px;
+    padding: 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    
+}
+
+.error {
+    background-color: #ffdddd;
+    color: #d8000c;
+    border: 1px solid #d8000c;
+}
+
+.success {
+    background-color: #ddffdd;
+    color: #4caf50;
+    border: 1px solid #4caf50;
+}
+
+
+
+.btn-secondary {
+    background-color: #ccc;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #0056b3;
+}
+.register-btn{
+     background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+/* Edit Form Styling */
+#editFormContainer {
+    position: fixed;
+    top: 70px;
+    left: 10px;
+    right: 10px;
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it's on top */
+    display: none; /* Initially hidden */
+    max-width: 400px;
+    margin: 20px auto; /* Center the form */
+    overflow-y: auto; /* Enable vertical scrolling for overflow */
+}
+
+
+
+/* X button styling */
+#editFormContainer .x-btn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: transparent;
+    border: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: red; /* Make the X button red */
+    font-weight: bold;
+}
+
+/* Form Fields Styling */
+#editFormContainer label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+}
+
+#editFormContainer input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+
+ .container {
+    padding: 15px;
+        margin-top: 20px;
+        margin-bottom: 50px;
+ 
+}
+
+
+    #tblData {
+        font-size: 12px;
+    }
+
+
+
+    #editFormContainer select, #editFormContainer input[type="text"] {
+        width: 95%;
+        margin-right: 0;
+       
+    }
+
+    .search-input {
+        width: 40%;
+    }
+
+    .search-button {
+        width: 25%;
+    }
+}

@@ -1,0 +1,138 @@
+.container {
+    max-width: 500px;
+    margin:100px auto;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1, h3, h2 {
+    color: #fff; /* White text for better contrast */
+    font-size: 24px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Adds spacing around the text */
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+h1, h3, h2:hover {
+    background-color: #0056b3; /* Slightly darker blue for hover effect */
+}
+
+
+/* Form Elements */
+form {
+   
+
+    display: flex;
+            flex-direction: column;
+}
+
+label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    display: inline-block;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: 150px;
+            text-align: right;
+}
+
+input[type="text"] {
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            width: calc(100% - 160px); /* Adjust based on label width + margin */
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .form-group input {
+            margin-left: 10px;
+        }
+
+
+#button {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+#button:hover {
+    background-color: #45a049;
+}
+
+/* Secondary Button */
+a.btn-secondary {
+    padding: 12px;
+    font-size: 16px;
+    text-decoration: none;
+    color: white;
+    background-color: #ccc;
+    display: inline-block;
+    margin-top: 15px;
+    border-radius: 4px;
+}
+
+a.btn-secondary:hover {
+    background-color: #0056b3;
+}
+
+
+
+/* Success and Error Messages */
+.error, .success {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.error {
+    background-color: #ffdddd;
+    color: #d8000c;
+    border: 1px solid #d8000c;
+}
+
+.success {
+    background-color: #ddffdd;
+    color: #4caf50;
+    border: 1px solid #4caf50;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    
+    .container {
+   
+        padding: 15px;
+        margin-top: 0px;
+        margin-bottom: 50px;
+       
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    #button, a.btn-secondary {
+        width: 100%;
+    }
+}

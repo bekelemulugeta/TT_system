@@ -1,0 +1,131 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* This will center the container horizontally */
+    min-height: 100vh; /* Ensures vertical centering */
+    gap: 5px;
+}
+
+
+.container {
+    width: 95%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    max-height: 500px;
+    max-width: 1500px;
+    gap: 10px;
+}
+
+
+
+
+h1, h3, h2 {
+    color: #fff; /* White text for better contrast */
+    font-size: 24px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Adds spacing around the text */
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+h1, h3, h2:hover {
+    background-color: #0056b3; /* Slightly darker blue for hover effect */
+}
+
+/* Table styling */
+#tblData {
+
+    max-width: 900px;
+    border-collapse: collapse;
+   max-height: 300px;
+    display: block;
+    white-space: nowrap;
+    overflow: auto;
+}
+
+#tblData th, #tblData td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#tblData th {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+}
+
+
+
+
+/* Clickable cells */
+.clickable {
+    cursor: pointer;
+    color: #007BFF;
+    text-decoration: underline;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 15% auto;
+    width: 90%;
+    padding: 20px;
+    max-width: 500px;
+    border-radius: 5px;
+    text-align: center;
+    position: relative;
+    overflow: auto;
+    
+    
+}
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    cursor: pointer;
+    color: red;
+}
+
+
+/* Responsive table */
+@media screen and (max-width: 768px) {
+.container {
+    flex-direction: column;
+    height: 100hv;
+    }
+ #tblData {
+        font-size: 12px;
+        max-width: 400px;
+    }
+
+
+/* Export button styling */
+.export-btn {
+    text-align: center;
+    margin-top: 20px;
+}}
+

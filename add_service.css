@@ -1,0 +1,148 @@
+/* Make body full height and center the container */
+body {
+    display: flex; 
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically */
+    width: 100%;
+    margin: 0; /* Remove default margin */
+    background-color: #f4f4f4; /* Optional: Light background */
+}
+
+/* Style the container */
+.container {
+    display: flex;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    gap: 100px;
+    margin-top: 90px;
+    overflow: auto;
+    max-height: 600px;
+}
+
+
+h1 {
+    color: #fff; /* White text for better contrast */
+    font-size: 24px;
+    margin-bottom: 10px;
+    background-color: #007bff;
+    text-align: center; /* Centers the text */
+    padding: 10px; /* Adds spacing around the text */
+    border-radius: 4px; /* Optional: adds rounded corners */
+}
+
+
+h1:hover {
+    background-color: #0056b3; /* Slightly darker blue for hover effect */
+}
+
+
+/* Success and Error Messages */
+.message {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+
+.form-container {
+    max-height: 500px;
+    max-width: 600px;
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table-container {
+    width: 80%; /* Adjust width to avoid full screen stretch */
+    max-width: 600px; /* Prevents too wide layout on large screens */
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+
+   
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    max-height: 400px;
+    display: block;
+    white-space: nowrap;
+    overflow: auto;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: background 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Hide optional input fields initially */
+.optional-input {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .container {
+        margin-top: 0px;
+        gap: 20px;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+    .table-container {
+height: 100%;
+width: 100%;
+    }
+    .form-container {
+        
+        width: 100%;
+        height: 100%;
+    }
+}
