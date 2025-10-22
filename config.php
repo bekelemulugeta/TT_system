@@ -20,7 +20,7 @@ header("Content-Security-Policy-Report: default-src 'self'; script-src 'self' 'u
 // **Secure session settings** (Set these BEFORE session_start)
 if (session_status() === PHP_SESSION_NONE) {
     session_set_cookie_params([
-        "lifetime" => 1200,  
+        "lifetime" => 7200,  
         "path" => "/",
         "domain" => "",  
         "secure" => true,  
@@ -28,19 +28,16 @@ if (session_status() === PHP_SESSION_NONE) {
         "samesite" => "Lax"  
     ]);
 
-    ini_set('session.gc_maxlifetime', 1200); 
+    ini_set('session.gc_maxlifetime', 7200); 
     ini_set('session.cookie_secure', 1);
     ini_set('session.cookie_httponly', 1);
     ini_set('session.use_strict_mode', 1);
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-session_regenerate_id(true);
+    session_start(); // Start session AFTER setting parameters
 }
 
 // **Session timeout logic**
-if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 1200)) {
+if (isset($_SESSION['LAST_ACTIVITY']) && (time() - $_SESSION['LAST_ACTIVITY'] > 7200)) {
     session_unset();
     session_destroy();
     header("Location: login.php"); 
@@ -59,7 +56,7 @@ if (empty($_SESSION['csrf_token'])) {
 $DATABASE_HOST = getenv('DB_HOST') ?: 'localhost';
 $DATABASE_USER = getenv('DB_USER') ?: 'root';
 $DATABASE_PASS = getenv('DB_PASS') ?: 'gbe@1234';
-$DATABASE_NAME = getenv('DB_NAME') ?: 'gbe_tt';
+$DATABASE_NAME = getenv('DB_NAME') ?: 'dgb_tt';
 
 // Enable error reporting for debugging, but prevent sensitive info from being shown
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

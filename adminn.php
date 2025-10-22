@@ -67,6 +67,7 @@ $row1 = $resultr->fetch_array();
             </div>
 
             <a href="tt_reg_admin.php" class="navbar-item">Registration</a>
+            <a href="down_branch_list.php" class="navbar-item">Bransh Status</a>
 
             <!-- TT Status Dropdown -->
             <div class="dropdown">

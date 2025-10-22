@@ -52,6 +52,11 @@ $result = mysqli_query($link, $query);
             <?php } ?>
         </tbody>
     </table>
+
+      <div class="export-container">
+        <button onclick="exportTableToExcel('tblData')">Export To Excel </button>
+    </div>
+    </div>
 </div>
 
 <!-- Edit Form -->
@@ -102,6 +107,8 @@ $result = mysqli_query($link, $query);
     </form>
     <p class="loading">Processing...</p>
 </div>
+
+
 
 <script>
     $(document).ready(function() {
@@ -189,6 +196,25 @@ $("#editForm").submit(function(e) {
     $("#editFormContainer").hide();
 });
 
+
+// Export table to Excel
+function exportTableToExcel(tableID) {
+    const table = document.getElementById(tableID);
+    let html = table.outerHTML;
+
+    const uri = 'data:application/vnd.ms-excel;base64,';
+    const base64 = function (s) {
+        return window.btoa(unescape(encodeURIComponent(s)));
+    };
+    const format = function (s) {
+        return s.replace(/[\r\n]/g, '').replace(/\s+/g, ' ').replace(/<br>/g, '\n');
+    };
+
+    const link = document.createElement('a');
+    link.href = uri + base64(format(html));
+    link.download = 'service number list.xls';
+    link.click();
+}
 </script>
 
 </body>
