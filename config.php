@@ -56,7 +56,7 @@ if (empty($_SESSION['csrf_token'])) {
 $DATABASE_HOST = getenv('DB_HOST') ?: 'localhost';
 $DATABASE_USER = getenv('DB_USER') ?: 'root';
 $DATABASE_PASS = getenv('DB_PASS') ?: 'gbe@1234';
-$DATABASE_NAME = getenv('DB_NAME') ?: 'dgb_tt';
+$DATABASE_NAME = getenv('DB_NAME') ?: 'gbe_tt';
 
 // Enable error reporting for debugging, but prevent sensitive info from being shown
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

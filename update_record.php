@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     // CSRF Protection
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        die("CSRF token validation failed.");
+        die(json_encode(["error" => "CSRF token validation failed."]));
     }
 
     $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
@@ -16,33 +16,51 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         exit;
     }
 
-
-    $User_Name = filter_input(INPUT_POST, 'User_Name', FILTER_SANITIZE_STRING);
-    $Department = filter_input(INPUT_POST, 'Department', FILTER_SANITIZE_STRING);
-    $Computer_Model = filter_input(INPUT_POST, 'Computer_Model', FILTER_SANITIZE_STRING);
-    $Computer_Name = filter_input(INPUT_POST, 'Computer_Name', FILTER_SANITIZE_STRING);
-    $Ip = filter_input(INPUT_POST, 'Ip', FILTER_SANITIZE_STRING);
-    $Flex = filter_input(INPUT_POST, 'Flex', FILTER_SANITIZE_STRING);
-    $Rep = filter_input(INPUT_POST, 'Rep', FILTER_SANITIZE_STRING);
-    $Local = filter_input(INPUT_POST, 'Local', FILTER_SANITIZE_STRING);
-    $NBE = filter_input(INPUT_POST, 'NBE', FILTER_SANITIZE_STRING);
-    $Internet = filter_input(INPUT_POST, 'Internet', FILTER_SANITIZE_STRING);
+    // Safely get all input fields, default empty string if not set
+    $User_Name      = isset($_POST['User_Name']) ? trim($_POST['User_Name']) : '';
+    $Department     = isset($_POST['Department']) ? trim($_POST['Department']) : '';
+    $Computer_Model = isset($_POST['Computer_Model']) ? trim($_POST['Computer_Model']) : '';
+    $Computer_Name  = isset($_POST['Computer_Name']) ? trim($_POST['Computer_Name']) : '';
+    $Ip             = isset($_POST['Ip']) ? trim($_POST['Ip']) : '';
+    $Flex           = isset($_POST['Flex']) ? trim($_POST['Flex']) : '';
+    $Rep            = isset($_POST['Rep']) ? trim($_POST['Rep']) : '';
+    $Local          = isset($_POST['Local']) ? trim($_POST['Local']) : '';
+    $NBE            = isset($_POST['NBE']) ? trim($_POST['NBE']) : '';
+    $Internet       = isset($_POST['Internet']) ? trim($_POST['Internet']) : '';
+    $remark         = isset($_POST['remark']) ? trim($_POST['remark']) : '';
 
     $query = "UPDATE head_office_ip 
               SET User_Name=?, Department=?, Computer_Model=?, Computer_Name=?, Ip=?, 
-                  Flex=?, Rep=?, Local=?, NBE=?, Internet=? 
+                  Flex=?, Rep=?, Local=?, NBE=?, Internet=?, remark=? 
               WHERE id=?";
 
     $stmt = mysqli_prepare($link, $query);
 
     if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "ssssssssssi", 
+        mysqli_stmt_bind_param($stmt, "sssssssssssi", 
             $User_Name, $Department, $Computer_Model, $Computer_Name, $Ip, 
-            $Flex, $Rep, $Local, $NBE, $Internet, $id
+            $Flex, $Rep, $Local, $NBE, $Internet, $remark, $id
         );
 
         if (mysqli_stmt_execute($stmt)) {
-            echo json_encode(["success" => "Record updated successfully"]);
+            // Return updated row data
+            echo json_encode([
+                "success" => true,
+                "data" => [
+                    "id" => $id,
+                    "User_Name" => $User_Name,
+                    "Department" => $Department,
+                    "Computer_Model" => $Computer_Model,
+                    "Computer_Name" => $Computer_Name,
+                    "Ip" => $Ip,
+                    "Flex" => $Flex,
+                    "Rep" => $Rep,
+                    "Local" => $Local,
+                    "NBE" => $NBE,
+                    "Internet" => $Internet,
+                    "remark" => $remark
+                ]
+            ]);
             http_response_code(200);
         } else {
             echo json_encode(["error" => "Database update failed"]);

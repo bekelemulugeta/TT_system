@@ -1,4 +1,5 @@
 
+
 <?php
 require_once("adminn.php");
 
@@ -15,9 +16,8 @@ $result = null; // Fix 1: Initialize $result
 
 if (isset($_POST['submitt'])) {
     $Dep = isset($_POST['branch']) ? mysqli_real_escape_string($link, $_POST['branch']) : '';
-
-    $queryyy = "SELECT id, User_Name, Department, Computer_Model, Computer_Name, Ip, Flex, Rep, Local, NBE, Internet 
-                FROM `head_office_ip` WHERE Department = ? ORDER BY Id ASC";
+$queryyy = "SELECT id, User_Name, Department, Computer_Model, Computer_Name, Ip, Flex, Rep, Local, NBE, Internet, remark 
+            FROM `head_office_ip` WHERE Department = ? ORDER BY Id ASC";
 
     if (!empty($Dep)) {
         $stmt = mysqli_prepare($link, $queryyy);
@@ -91,8 +91,10 @@ mysqli_data_seek($departments, 0);
                 <th>Local</th>
                 <th>NBE</th>
                 <th>Internet</th>
+                <th>Remark</th>
                 <th>Action</th>
                 <th>Edit</th>
+               
             </tr>
         </thead>
         <tbody>
@@ -108,6 +110,7 @@ mysqli_data_seek($departments, 0);
                     <td><?= htmlspecialchars($row['Local']) ?></td>
                     <td><?= htmlspecialchars($row['NBE']) ?></td>
                     <td><?= htmlspecialchars($row['Internet']) ?></td>
+                    <td><?= htmlspecialchars($row['remark']) ?></td>
                     <td><button class="remove btn btn-danger btn-sm" data-id="<?= $row['id'] ?>">Delete</button></td>
                     <td><button class="edit btn btn-primary btn-sm" data-id="<?= $row['id'] ?>">Edit</button></td>
                 </tr>
@@ -146,10 +149,12 @@ mysqli_data_seek($departments, 0);
             foreach ($fields as $field) : ?>
                 <label><?= $field ?>:</label>
                 <select name="<?= $field ?>" id="edit_<?= $field ?>">
-                    <option value="Y">Yes</option>
-                    <option value="N">No</option>
+                    <option value="Y">Y</option>
+                    <option value="N">N</option>
                 </select>
             <?php endforeach; ?>
+            <label>Remark:</label> <input type="text" name="remark" id="edit_remark" >
+
 
               <input type="submit" value="Save Changes" class="btn btn-success" />
               <button type="button" class="btn btn-secondary" onclick="$('#editFormContainer').hide();">Cancel</button>
@@ -159,22 +164,23 @@ mysqli_data_seek($departments, 0);
 
 <script>
   
-  
-$(document).ready(function () {
-    // Handle edit button click
-    $(".edit").click(function () {
+  $(document).ready(function () {
+
+    // Function to attach edit handler
+    function editHandler() {
         var id = $(this).data("id");
+        console.log("Editing ID:", id); // debug
 
         $.ajax({
             url: "fetch_record.php",
             type: "POST",
             data: { id: id },
             dataType: "json",
-            success: function (data) {
+            success: function(data) {
                 if (data.error) {
                     alert("Error: " + data.error);
                 } else {
-                    $("#edit_id").val(data.id);
+                    $("#edit_id").val(data.id || id);
                     $("#edit_User_Name").val(data.User_Name);
                     $("#edit_Department").val(data.Department);
                     $("#edit_Computer_Model").val(data.Computer_Model);
@@ -185,14 +191,34 @@ $(document).ready(function () {
                     $("#edit_Local").val(data.Local);
                     $("#edit_NBE").val(data.NBE);
                     $("#edit_Internet").val(data.Internet);
+                    $("#edit_remark").val(data.remark);
                     $("#editFormContainer").fadeIn();
                 }
             },
-            error: function () {
+            error: function() {
                 alert("Error fetching data.");
             }
         });
-    });
+    }
+
+    // Function to attach delete handler
+    function deleteHandler() {
+        var id = $(this).data("id");
+        if (confirm("Are you sure you want to delete this record?")) {
+            $.ajax({
+                url: "delete_record.php",
+                type: "POST",
+                data: { id: id },
+                success: function() {
+                    $("#row_" + id).remove();
+                }
+            });
+        }
+    }
+
+    // Initial binding for existing rows
+    $(".edit").click(editHandler);
+    $(".remove").click(deleteHandler);
 
     // Handle update form submission
     $("#updateForm").submit(function (e) {
@@ -205,8 +231,30 @@ $(document).ready(function () {
             dataType: "json",
             success: function (response) {
                 if (response.success) {
-                    alert("Updated successfully!");
-                    location.reload(); // Reload to reflect changes
+                    let row = response.data; // Updated record
+                    let tr = $("#row_" + row.id);
+                    
+                    tr.html(`
+                        <td>${row.User_Name}</td>
+                        <td>${row.Department}</td>
+                        <td>${row.Computer_Model}</td>
+                        <td>${row.Computer_Name}</td>
+                        <td>${row.Ip}</td>
+                        <td>${row.Flex}</td>
+                        <td>${row.Rep}</td>
+                        <td>${row.Local}</td>
+                        <td>${row.NBE}</td>
+                        <td>${row.Internet}</td>
+                        <td>${row.remark}</td>
+                        <td><button class="remove btn btn-danger btn-sm" data-id="${row.id}">Delete</button></td>
+                        <td><button class="edit btn btn-primary btn-sm" data-id="${row.id}">Edit</button></td>
+                    `);
+
+                    // Reattach handlers to new buttons
+                    tr.find(".edit").click(editHandler);
+                    tr.find(".remove").click(deleteHandler);
+
+                    $("#editFormContainer").fadeOut();
                 } else {
                     alert("Error: " + response.error);
                 }
@@ -217,36 +265,15 @@ $(document).ready(function () {
         });
     });
 
-    // Hide edit form when cancel button is clicked
-    $(".btn-secondary").click(function () {
+    // Cancel button to hide edit form
+    $(".btn-secondary, .x-btn").click(function () {
         $("#editFormContainer").fadeOut();
     });
+
+    // Mask IP input
+    $(".mask-ipv4").inputmask({ alias: "ip", greedy: false });
 });
 
-
-
-    $(".remove").click(function() {
-        var id = $(this).data("id");
-        if (confirm("Are you sure you want to delete this record?")) {
-            $.ajax({
-                url: "delete_record.php",
-                type: "POST",
-                data: { id: id },
-                success: function() {
-                    $("#row_" + id).remove();
-                }
-            });
-        }
-    });
-
- // Close the form when X button is clicked
-$(".x-btn").click(function() {
-    $("#editFormContainer").hide();
-});
-
- // Mask IP input
-        $(".mask-ipv4").inputmask({ alias: "ip", greedy: false });
-       
 </script>
 
 </body>

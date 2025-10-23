@@ -1,3 +1,4 @@
+
 <?php
 require_once("adminn.php");
 
@@ -10,6 +11,7 @@ $stmt = mysqli_prepare($link, $queryyy);
 mysqli_stmt_bind_param($stmt, 's', $re);
 mysqli_stmt_execute($stmt);
 $result111 = mysqli_stmt_get_result($stmt);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,9 +41,30 @@ $result111 = mysqli_stmt_get_result($stmt);
 <body>
 <?php if (mysqli_num_rows($result111) > 0): ?>
 <div class="container">
+ 
+
     
       <div class="table-column">
+
         <h1>Overview of Active TTs</h1>
+   <!-- Message box -->
+<div id="tt-message" style="padding:10px; margin-bottom:10px; border-radius:5px; display:none;"></div>
+
+<?php if (isset($success_message)): ?>
+<script>
+    $(document).ready(function() {
+        $("#tt-message")
+            .text("<?= htmlspecialchars($success_message, ENT_QUOTES); ?>")
+            .css({
+                "background-color": "#d4edda",
+                "color": "#155724",
+                "border": "1px solid #c3e6cb",
+                "display": "block"
+            });
+    });
+</script>
+<?php endif; ?>
+
         <table id="tblData" class="table table-bordered">
             <thead>
                 <tr>
@@ -50,8 +73,9 @@ $result111 = mysqli_stmt_get_result($stmt);
                     <th>LAN IP</th>
                     <th>TT reg. date</th>
                     <th>Days</th>
-                    <th>Ping Result</th>
+                    <th>Live</th>
                     <th>Action</th>
+                    <th>Close</th>
                  
                 </tr>
             </thead>
@@ -88,6 +112,15 @@ $result111 = mysqli_stmt_get_result($stmt);
     </div>
 </td>
 
+<td>
+<form class="close-form">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+    <input type="hidden" name="tt" value="<?= htmlspecialchars($row['tt'], ENT_QUOTES, 'UTF-8') ?>">
+    <button type="button" class="close-btn">Close</button>
+</form>
+
+
+</td>
                     </tr>
                 <?php endwhile; ?>
             </tbody>
@@ -257,6 +290,70 @@ $(document).on("click", ".ping-option", function(){
         resultDiv.append("<span style='color:red;'>Ping finished.</span><br>");
         window.pingSource.close();
     };
+});
+
+
+// Close TT via AJAX
+$(document).on("click", ".close-btn", function() {
+    var form = $(this).closest("form");
+    var tt = form.find("input[name='tt']").val();
+    var csrf = form.find("input[name='csrf_token']").val();
+    var row = form.closest("tr");
+    var msgBox = $("#tt-message");
+
+    $.ajax({
+        url: "close_tt.php",
+        type: "POST",
+        data: { tt: tt, csrf_token: csrf },
+        success: function(response) {
+            response = response.trim();
+
+            if (response === "success") {
+                // Remove the row
+                row.fadeOut(500, function(){ $(this).remove(); });
+
+                // Show success message
+                msgBox
+                    .text("TT closed successfully.")
+                    .css({
+                        "background-color": "#d4edda",
+                        "color": "#155724",
+                        "border": "1px solid #c3e6cb",
+                        "display": "block"
+                    });
+            } else {
+                // Show error message
+                msgBox
+                    .text(response)
+                    .css({
+                        "background-color": "#f8d7da",
+                        "color": "#721c24",
+                        "border": "1px solid #f5c6cb",
+                        "display": "block"
+                    });
+            }
+
+            // Hide message after 3 seconds
+            setTimeout(function(){
+                msgBox.fadeOut(500);
+            }, 3000);
+        },
+        error: function() {
+            msgBox
+                .text("An error occurred while closing the TT.")
+                .css({
+                    "background-color": "#f8d7da",
+                    "color": "#721c24",
+                    "border": "1px solid #f5c6cb",
+                    "display": "block"
+                });
+
+            // Hide message after 3 seconds
+            setTimeout(function(){
+                msgBox.fadeOut(500);
+            }, 3000);
+        }
+    });
 });
 
 
