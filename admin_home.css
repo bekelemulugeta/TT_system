@@ -1,4 +1,6 @@
-/* General body styling */
+/* -----------------------------
+   General body styling
+----------------------------- */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -7,37 +9,30 @@ body {
     color: #333;
 }
 
-/* Container for table + ping output */
+/* -----------------------------
+   Container for table + ping/trace columns
+----------------------------- */
 .container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 10px;
+    align-items: flex-start; /* Prevent table from stretching with ping-column */
     gap: 10px;
+    padding: 10px;
+    margin-top: 50px;
 }
 
-/* Table column with scroll */
+/* -----------------------------
+   Table column
+----------------------------- */
 .table-column {
-    flex: 1 1 600px; /* min-width 600px, flexible */
-    overflow-x: auto; /* horizontal scroll for wide tables */
-    overflow-y: auto; /* vertical scroll when content is too tall */
-    max-height: 600px; /* set max height */
+    flex: 2 1 600px;       /* Table takes more space */
+    max-height: 600px;     /* Prevent growing too tall */
+    overflow: auto;         /* Scroll when content exceeds max-height */
     background-color: #fff;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-
-/* Ping column */
-.ping-column {
-    flex: 1 1 250px; /* min-width 300px, flexible */
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-height: 500px;
-    overflow-y: auto;
 }
 
 /* Table styling */
@@ -58,16 +53,32 @@ th {
     color: white;
     position: sticky;
     top: 0;
+    z-index: 2;
 }
 
 tr:hover {
     background-color: #f1f1f1;
 }
 
-/* Ping result cell */
+/* Ping result in table */
 .ping-result {
     font-weight: bold;
     text-align: center;
+}
+
+/* -----------------------------
+   Ping/Trace column
+----------------------------- */
+.ping-column {
+    flex: 1 1 300px;        /* Smaller column for ping/trace */
+    max-height: 500px;      /* Limit total column height */
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 /* Buttons */
@@ -85,30 +96,45 @@ tr:hover {
     background-color: #0056b3;
 }
 
-/* Ping output div */
-#ping-result-content {
+/* -----------------------------
+   Ping and Trace outputs
+----------------------------- */
+#ping-result-content,
+#trace-result-content {
+    flex: 1;                    /* Fill remaining height in ping-column */
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     padding: 10px;
     border-radius: 5px;
     font-family: monospace;
     font-size: 14px;
-    min-height: 200px;
+    overflow-y: auto;           /* Scroll if content exceeds height */
+    white-space: pre-wrap;      /* Keep line breaks */
+    max-height: 200px;
 }
 
-/* Headings */
+/* -----------------------------
+   Headings
+----------------------------- */
 h1, h3 {
     margin-top: 0;
 }
 
-/* Responsive adjustments */
+/* -----------------------------
+   Responsive adjustments
+----------------------------- */
 @media (max-width: 900px) {
     .container {
         flex-direction: column;
+        margin-top: 0;
     }
+
     .table-column, .ping-column {
         flex: 1 1 100%;
+        max-height: none;       /* Let columns expand naturally on small screens */
+        margin-bottom: 80px;
     }
+
     table {
         min-width: 100%;
     }

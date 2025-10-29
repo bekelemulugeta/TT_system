@@ -127,21 +127,34 @@ $result111 = mysqli_stmt_get_result($stmt);
         </table>
     </div>
 
-    <!-- Div for ping output -->
-    <div class="ping-column">
-    <h3>Ping Output</h3>
+ <!-- Div for manual Ping and Traceroute output -->
+<div class="ping-column">
+    <h3>Network Tools</h3>
+
+    <!-- Input and action buttons -->
     <div style="margin-bottom:10px;">
-        <input type="text" id="manual-ip" placeholder="Enter IP to ping">
-        <select id="manual-bytes">
+        <input type="text" id="manual-ip" placeholder="Enter IP or Host" style="width:200px; padding:4px;">
+        <select id="manual-bytes" style="padding:4px;">
             <option value="32">32 bytes</option>
             <option value="1400" selected>1400 bytes</option>
             <option value="2000">2000 bytes</option>
             <option value="5000">5000 bytes</option>
         </select>
         <button id="manual-ping-btn" class="ping-btn">Ping</button>
+        <button id="manual-trace-btn" class="ping-btn" style="background-color:#28a745;">Trace</button>
     </div>
-    <div id="ping-result-content">Click a Ping button or submit an IP to see results here.</div>
+
+    <!-- Output areas -->
+    <div id="ping-result-content" style="margin-top:10px; font-family:monospace; white-space:pre-wrap; border:1px solid #ccc; padding:6px; min-height:100px;">
+        Click a Ping button or submit an IP to see results here.
+    </div>
+
+    <div id="trace-result-content" style="margin-top:10px; font-family:monospace; white-space:pre-wrap; border:1px solid #ccc; padding:6px; min-height:100px;">
+        Click the Trace button to see results here.
+    </div>
 </div>
+
+
 
 
 
@@ -293,6 +306,44 @@ $(document).on("click", ".ping-option", function(){
 });
 
 
+
+// Manual traceroute
+$(document).on("click", "#manual-trace-btn", function(){
+    var ip = $("#manual-ip").val().trim();
+    var resultDiv = $("#trace-result-content");
+
+    if(ip === ""){
+        alert("Please enter an IP or hostname.");
+        return;
+    }
+
+    resultDiv.html("<em>Starting traceroute to " + ip + "...</em><br>");
+
+    // Close any previous SSE if exists
+    if (window.traceSource) window.traceSource.close();
+
+    // Open SSE connection to trace_live.php
+    window.traceSource = new EventSource("trace_live.php?ip=" + encodeURIComponent(ip));
+
+    window.traceSource.onmessage = function(e) {
+        resultDiv.append(e.data + "<br>");
+        resultDiv.scrollTop(resultDiv[0].scrollHeight);
+    };
+
+    window.traceSource.onerror = function() {
+        resultDiv.append("<span style='color:red;'>Trace finished.</span><br>");
+        window.traceSource.close();
+    };
+});
+
+// Trigger traceroute on Enter key press
+$("#manual-ip").on("keypress", function(e) {
+    if (e.which === 13) {
+        // By default, Enter triggers ping — leave ping logic as-is
+        // To trigger trace on Enter, you can add a separate key combo if desired
+    }
+});
+
 // Close TT via AJAX
 $(document).on("click", ".close-btn", function() {
     var form = $(this).closest("form");
@@ -355,6 +406,9 @@ $(document).on("click", ".close-btn", function() {
         }
     });
 });
+
+
+
 
 
 </script>
