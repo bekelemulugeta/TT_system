@@ -141,13 +141,13 @@ $result111 = mysqli_stmt_get_result($stmt);
             <option value="5000">5000 bytes</option>
         </select>
         <button id="manual-ping-btn" class="ping-btn">Ping</button>
-<button id="manual-trace-btn" class="ping-btn" style="background-color:#28a745;">Trace</button>
+<button id="manual-trace-btn" style="background-color:#28a745;">Trace</button>
 
 
         <!-- NEW: Scan controls -->
 <button id="manual-scan-btn" style="background-color:#6f42c1;">Scan</button>
 <button id="manual-scan-stop-btn" style="background-color:#dc3545; display:none;">Stop Scan</button>
-<span id="scan-hint" style="margin-left:8px; font-size:12px; color:#666;">Allowed: single IP, CIDR, or start-end (1.1.1.11-1.1.1.20). Server enforces limits.</span>
+<span id="scan-hint" style="margin-left:8px; font-size:12px; color:#666;">Allowed: single IP, CIDR, or start-end (1.1.1.1-1.1.1.20). Server enforces limits.</span>
     </div>
 
     <!-- Output areas -->
