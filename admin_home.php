@@ -127,7 +127,7 @@ $result111 = mysqli_stmt_get_result($stmt);
         </table>
     </div>
 
- <!-- Div for manual Ping and Traceroute output -->
+ <!-- Div for manual Ping, Traceroute and Scan output -->
 <div class="ping-column">
     <h3>Network Tools</h3>
 
@@ -141,7 +141,13 @@ $result111 = mysqli_stmt_get_result($stmt);
             <option value="5000">5000 bytes</option>
         </select>
         <button id="manual-ping-btn" class="ping-btn">Ping</button>
-        <button id="manual-trace-btn" class="ping-btn" style="background-color:#28a745;">Trace</button>
+<button id="manual-trace-btn" class="ping-btn" style="background-color:#28a745;">Trace</button>
+
+
+        <!-- NEW: Scan controls -->
+<button id="manual-scan-btn" style="background-color:#6f42c1;">Scan</button>
+<button id="manual-scan-stop-btn" style="background-color:#dc3545; display:none;">Stop Scan</button>
+<span id="scan-hint" style="margin-left:8px; font-size:12px; color:#666;">Allowed: single IP, CIDR, or start-end (1.1.1.11-1.1.1.20). Server enforces limits.</span>
     </div>
 
     <!-- Output areas -->
@@ -152,6 +158,11 @@ $result111 = mysqli_stmt_get_result($stmt);
     <div id="trace-result-content" style="margin-top:10px; font-family:monospace; white-space:pre-wrap; border:1px solid #ccc; padding:6px; min-height:100px;">
         Click the Trace button to see results here.
     </div>
+
+    <div id="scan-result-content" style="margin-top:10px; font-family:monospace; white-space:pre-wrap; border:1px solid #ccc; padding:6px; min-height:120px;">
+    Click the Scan button to see results here.
+</div>
+
 </div>
 
 
@@ -252,23 +263,8 @@ $(document).on("click", "#manual-ping-btn", function(){
     };
 });
 
-// Trigger ping when Enter is pressed in the input field
-$("#manual-ip").on("keypress", function(e) {
-    if (e.which === 13) {
-        $("#manual-ping-btn").click();
-        e.preventDefault();
-    }
-});
 
 
-
-// Trigger ping when Enter is pressed in the input field
-$("#manual-ip").on("keypress", function(e) {
-    if (e.which === 13) { // 13 = Enter key
-        $("#manual-ping-btn").click(); // Trigger the ping button click
-        e.preventDefault(); // Prevent form submission or page reload
-    }
-});
 
 
 
@@ -409,7 +405,90 @@ $(document).on("click", ".close-btn", function() {
 
 
 
+// Minimal client to show only UP (green) or DOWN (red)
+function startMinimalScan(ip) {
+    var output = $("#scan-result-content");
+    output.empty();
+    output.append("<div>Scanning: " + $('<div>').text(ip).html() + "</div>");
 
+    var upCount = 0, downCount = 0, total = 0;
+
+    // Close previous scan if exists
+    if (window.minScanSource) try { window.minScanSource.close(); } catch(e){}
+
+    // Show stop button, hide start button
+    $("#manual-scan-btn").hide();
+    $("#manual-scan-stop-btn").show();
+
+    window.minScanSource = new EventSource("scan_live.php?ip=" + encodeURIComponent(ip));
+
+    window.minScanSource.onmessage = function(e) {
+        var parts = e.data.split('|');
+        if (parts.length < 2) return;
+        var status = parts[0];
+        var host = parts[1];
+
+        // Scan completion
+        if (status === 'DONE' && host === 'scan_complete') {
+            output.append("<div style='margin-top:8px;color:#666;'>Scan finished — total: " + total + ", UP: " + upCount + ", DOWN: " + downCount + "</div>");
+            try { window.minScanSource.close(); } catch(e){}
+            $("#manual-scan-btn").show();
+            $("#manual-scan-stop-btn").hide();
+            return;
+        }
+
+        total++;
+        var line = $("<div>").text(host + " — " + status);
+        if (status === 'UP') {
+            line.css("color","green");
+            upCount++;
+        } else {
+            line.css("color","red");
+            downCount++;
+        }
+        output.append(line);
+
+        // Update top summary
+        $("#scan-summary").remove();
+        output.prepend("<div id='scan-summary' style='font-weight:bold;margin-bottom:6px;'>Scanned: " + total + " | UP: " + upCount + " | DOWN: " + downCount + "</div>");
+
+        // Autoscroll
+        output.scrollTop(output[0].scrollHeight);
+    };
+
+    window.minScanSource.onerror = function() {
+        // EventSource closed by server or network issue
+        try { window.minScanSource.close(); } catch(e){}
+        output.append("<div style='color:#666'>Connection closed.</div>");
+        $("#manual-scan-btn").show();
+        $("#manual-scan-stop-btn").hide();
+    };
+}
+
+// Start scan button
+$(document).on("click", "#manual-scan-btn", function(){
+    var ip = $("#manual-ip").val().trim();
+    if (!ip) { alert("Enter IP/CIDR/range"); return; }
+    startMinimalScan(ip);
+});
+
+// Stop scan button
+$(document).on("click", "#manual-scan-stop-btn", function(){
+    if (window.minScanSource) {
+        try { window.minScanSource.close(); } catch(e){}
+        $("#scan-result-content").append("<div style='color:red;'>Scan stopped by user.</div>");
+    }
+    $(this).hide();
+    $("#manual-scan-btn").show();
+});
+
+
+// Example: bind to your scan button
+$(document).on("click", "#manual-scan-btn", function(){
+    var ip = $("#manual-ip").val().trim();
+    if (!ip) { alert("Enter IP/CIDR/range"); return; }
+    startMinimalScan(ip);
+});
 
 </script>
 <?php else: ?>
