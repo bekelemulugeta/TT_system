@@ -127,45 +127,59 @@ $result111 = mysqli_stmt_get_result($stmt);
         </table>
     </div>
 
- <!-- Div for manual Ping, Traceroute and Scan output -->
+<!-- Div for manual Ping, Traceroute and Scan output -->
 <div class="ping-column">
     <h3>Network Tools</h3>
 
-    <!-- Input and action buttons -->
-    <div style="margin-bottom:10px;">
-        <input type="text" id="manual-ip" placeholder="Enter IP or Host" style="width:200px; padding:4px;">
-        <select id="manual-bytes" style="padding:4px;">
-            <option value="32">32 bytes</option>
-            <option value="1400" selected>1400 bytes</option>
-            <option value="2000">2000 bytes</option>
-            <option value="5000">5000 bytes</option>
-        </select>
-        <button id="manual-ping-btn" class="ping-btn">Ping</button>
-<button id="manual-trace-btn" style="background-color:#28a745;">Trace</button>
+    <div class="network-controls">
+    <input type="text" id="manual-ip" placeholder="IP/Host or Range(scan)">
+    <select id="manual-bytes">
+        <option value="32">32 bytes</option>
+        <option value="1400" selected>1400 bytes</option>
+        <option value="2000">2000 bytes</option>
+        <option value="5000">5000 bytes</option>
+    </select>
+    <button id="manual-ping-btn" class="ping-btn">Ping</button>
+    <button id="manual-trace-btn" class="trace-btn">Trace</button>
+    <button id="manual-scan-btn" class="scan-btn">Scan</button>
+    <button id="manual-scan-stop-btn" class="scan-stop-btn">Stop Scan</button>
+    
+</div>
 
-
-        <!-- NEW: Scan controls -->
-<button id="manual-scan-btn" style="background-color:#6f42c1;">Scan</button>
-<button id="manual-scan-stop-btn" style="background-color:#dc3545; display:none;">Stop Scan</button>
-<span id="scan-hint" style="margin-left:8px; font-size:12px; color:#666;">Allowed: single IP, CIDR, or start-end (1.1.1.1-1.1.1.20). Server enforces limits.</span>
-    </div>
 
     <!-- Output areas -->
-    <div id="ping-result-content" style="margin-top:10px; font-family:monospace; white-space:pre-wrap; border:1px solid #ccc; padding:6px; min-height:100px;">
+    <div id="ping-result-content">
         Click a Ping button or submit an IP to see results here.
     </div>
 
-    <div id="trace-result-content" style="margin-top:10px; font-family:monospace; white-space:pre-wrap; border:1px solid #ccc; padding:6px; min-height:100px;">
+    <div id="trace-result-content">
         Click the Trace button to see results here.
     </div>
 
-    <div id="scan-result-content" style="margin-top:10px; font-family:monospace; white-space:pre-wrap; border:1px solid #ccc; padding:6px; min-height:120px;">
-    Click the Scan button to see results here.
+    <div id="scan-result-content">
+        Click the Scan button to see results here.
+    </div>
+
+    <!-- DNS Lookup -->
+<div class="network-controls">
+    <input type="text" id="dns-input" placeholder="Enter IP or Domain">
+    <button id="dns-lookup-btn">Lookup</button>
+</div>
+<div id="dns-result-content">DNS results will appear here.
 </div>
 
+<!-- TCP Port Checker -->
+<div class="network-controls">
+    <input type="text" id="tcp-host" placeholder="Enter IP or Host">
+    <input type="number" id="tcp-port" placeholder="Port (e.g. 22, 80, 443)" min="1" max="65535">
+    <button id="tcp-check-btn">Check Port</button>
+</div>
+
+<div id="tcp-result-content">Port check results will appear here.
 </div>
 
 
+</div>
 
 
 
@@ -174,39 +188,53 @@ $result111 = mysqli_stmt_get_result($stmt);
 
 
 <script>
-function pingAllBranches() {
-    $("#tblData tbody tr").each(function(){
-        var row = $(this);
-        var ip = row.data("ip");
-        var resultCell = row.find(".ping-result");
+async function pingSequentially(rows, batchSize = 10, delayBetween = 200) {
+    // Split rows into batches
+    for (let i = 0; i < rows.length; i += batchSize) {
+        const batch = rows.slice(i, i + batchSize);
 
-        $.ajax({
-            url: "ping_active_tt.php",
-            type: "POST",
-            data: { ip: ip, quick: 1 }, // quick mode for status only
-            success: function(response) {
-                resultCell.text(response);
-                if(response.toLowerCase() === "up"){
-                    resultCell.css("color", "green");
-                } else if(response.toLowerCase() === "down"){
-                    resultCell.css("color", "red");
+        // Run all pings in this batch in parallel
+        await Promise.all(batch.map(async (row) => {
+            const $row = $(row);
+            const ip = $row.data("ip");
+            const $resultCell = $row.find(".ping-result");
+
+            // Show checking status
+            $resultCell.text("Checking...").css("color", "gray");
+
+            try {
+                const response = await $.post("ping_active_tt.php", { ip: ip, quick: 1 });
+                const res = response.trim().toLowerCase();
+
+                if (res === "up") {
+                    $resultCell.text("UP").css("color", "green");
+                } else if (res === "down") {
+                    $resultCell.text("DOWN").css("color", "red");
                 } else {
-                    resultCell.css("color", "black");
+                    $resultCell.text(response).css("color", "black");
                 }
-            },
-            error: function() {
-                resultCell.text("Error");
-                resultCell.css("color", "black");
+            } catch (error) {
+                $resultCell.text("Error").css("color", "black");
             }
-        });
-    });
+        }));
+
+        // Small pause before next batch
+        await new Promise(resolve => setTimeout(resolve, delayBetween));
+    }
 }
 
-// Run automatic ping every 5 minutes
+function pingAllBranches() {
+    const rows = $("#tblData tbody tr").toArray();
+    pingSequentially(rows, 10, 200); 
+    // ↑ Batch size 10, 200ms delay between batches
+}
+
 $(document).ready(function(){
-    pingAllBranches(); // initial run
-    setInterval(pingAllBranches, 300000); // 300,000 ms = 5 min
+    pingAllBranches();                // Run initially
+    setInterval(pingAllBranches, 300000); // Repeat every 5 minutes
 });
+
+
 
 // Manual ping - show result in div next to the table
 $(document).on("click", ".ping-btn", function(){
@@ -489,6 +517,57 @@ $(document).on("click", "#manual-scan-btn", function(){
     if (!ip) { alert("Enter IP/CIDR/range"); return; }
     startMinimalScan(ip);
 });
+
+
+// ===================== DNS LOOKUP (uses nslookup.php) =====================
+$(document).on("click", "#dns-lookup-btn", function() {
+    var host = $("#dns-input").val().trim();
+    if (host === "") {
+        alert("Please enter an IP or domain or URL.");
+        return;
+    }
+
+    $("#dns-result-content").html("<em>Looking up DNS records for " + $('<div>').text(host).html() + "...</em>");
+
+    $.ajax({
+        url: "nslookup.php",
+        type: "POST",
+        data: { action: "dns", host: host },
+        success: function(response) {
+            $("#dns-result-content").html(response);
+        },
+        error: function() {
+            $("#dns-result-content").html("<span style='color:red;'>Error performing DNS lookup.</span>");
+        }
+    });
+});
+
+
+// ===================== TCP PORT CHECKER =====================
+$(document).on("click", "#tcp-check-btn", function() {
+    var host = $("#tcp-host").val().trim();
+    var port = $("#tcp-port").val().trim();
+
+    if (host === "" || port === "") {
+        alert("Please enter both host and port.");
+        return;
+    }
+
+    $("#tcp-result-content").html("<em>Checking port " + port + " on " + host + "...</em>");
+
+    $.ajax({
+        url: "portcheck.php",
+        type: "POST",
+        data: { host: host, port: port },
+        success: function(response) {
+            $("#tcp-result-content").html(response);
+        },
+        error: function() {
+            $("#tcp-result-content").html("<span style='color:red;'>Error performing port check.</span>");
+        }
+    });
+});
+
 
 </script>
 <?php else: ?>

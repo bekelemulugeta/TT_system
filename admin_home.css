@@ -16,26 +16,26 @@ body {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    align-items: flex-start; /* Prevent table from stretching with ping-column */
+    align-items: flex-start; 
     gap: 10px;
     padding: 10px;
     margin-top: 50px;
+    margin-bottom: 30px;
 }
 
 /* -----------------------------
    Table column
 ----------------------------- */
 .table-column {
-    flex: 2 1 600px;       /* Table takes more space */
-    max-height: 600px;     /* Prevent growing too tall */
-    overflow: auto;         /* Scroll when content exceeds max-height */
+    flex: 2 1 600px;       
+    max-height: 600px;     
+    overflow: auto;        
     background-color: #fff;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* Table styling */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -67,11 +67,11 @@ tr:hover {
 }
 
 /* -----------------------------
-   Ping/Trace column
+   Ping/Trace/Scan column
 ----------------------------- */
 .ping-column {
-    flex: 1 1 300px;        /* Smaller column for ping/trace */
-    max-height: 500px;      /* Limit total column height */
+    flex: 1 1 300px;        
+    max-height: 95%;      
     background-color: #fff;
     padding: 15px;
     border-radius: 10px;
@@ -81,61 +81,112 @@ tr:hover {
     gap: 10px;
 }
 
-/* Buttons */
-.ping-btn {
-    padding: 6px 12px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
+/* -----------------------------
+   Buttons
+----------------------------- */
+.ping-btn { padding: 3px 8px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; transition: all 0.2s ease; }
+.ping-btn:hover { background-color: #0056b3; }
 
-.ping-btn:hover {
-    background-color: #0056b3;
-}
+.trace-btn { padding: 3px 8px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; transition: all 0.2s ease; }
+.trace-btn:hover { background-color: #1e7e34; }
+
+.scan-btn { padding: 3px 8px; background-color: #6f42c1; color: white; border: none; border-radius: 5px; cursor: pointer; transition: all 0.2s ease; }
+.scan-btn:hover { background-color: #5931a9; }
+
+.scan-stop-btn { padding: 3px 8px; background-color: #dc3545; color: white; border: none; border-radius: 5px; cursor: pointer; display: none; transition: all 0.2s ease; }
+.scan-stop-btn:hover { background-color: #b02a37; }
 
 /* -----------------------------
-   Ping and Trace outputs
+   Output boxes
 ----------------------------- */
 #ping-result-content,
-#trace-result-content {
-    flex: 1;                    /* Fill remaining height in ping-column */
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 5px;
+#trace-result-content,
+#scan-result-content,
+#dns-result-content,
+#tcp-result-content {
     font-family: monospace;
+    white-space: pre-wrap;
+    border: 1px solid #ccc;
+    padding: 6px;
+    border-radius: 5px;
     font-size: 14px;
-    overflow-y: auto;           /* Scroll if content exceeds height */
-    white-space: pre-wrap;      /* Keep line breaks */
-    max-height: 200px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
 }
+
+#ping-result-content,
+#trace-result-content { min-height: 100px; max-height: 200px; }
+#scan-result-content { min-height: 120px; max-height: 250px; }
+#dns-result-content,
+#tcp-result-content { min-height: 100px; max-height: 250px; margin-top: 6px; }
 
 /* -----------------------------
    Headings
 ----------------------------- */
-h1, h3 {
-    margin-top: 0;
+h1, h3 { margin-top: 0; }
+
+/* -----------------------------
+   DNS Lookup & Port Checker
+----------------------------- */
+.network-controls input[type="text"],
+.network-controls input[type="number"],
+.network-controls select {
+    padding: 6px 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 6px;
+    flex: 1 1 auto;
+    min-width: 100px;
+}
+
+.network-controls button {
+    padding: 6px 12px;
+    flex: 0 0 auto;
+    cursor: pointer;
+}
+
+#dns-lookup-btn { background-color: #17a2b8; color: white; border: none; border-radius: 5px; transition: background-color 0.2s ease; }
+#dns-lookup-btn:hover { background-color: #117a8b; }
+
+#tcp-check-btn { background-color: #17a2b8; color: white; border: none; border-radius: 5px; transition: background-color 0.2s ease; }
+#tcp-check-btn:hover { background-color: #117a8b; }
+
+/* DNS result table */
+#dns-result-content table { border: 1px solid #ccc; border-collapse: collapse; margin-top: 10px; width: 100%; }
+#dns-result-content th, #dns-result-content td { padding: 6px 8px; border: 1px solid #ddd; text-align: left; }
+#dns-result-content th { background-color: #f8f8f8; font-weight: bold; }
+#dns-result-content a { color: #0073e6; text-decoration: none; }
+#dns-result-content a:hover { text-decoration: underline; }
+
+/* Flex row for inputs/buttons */
+.network-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    align-items: center;
 }
 
 /* -----------------------------
    Responsive adjustments
 ----------------------------- */
 @media (max-width: 900px) {
-    .container {
+    .container { flex-direction: column; margin-top: 0; }
+    .table-column, .ping-column { flex: 1 1 100%; max-height: none; margin-bottom: 80px; }
+    table { min-width: 100%; }
+}
+
+@media (max-width: 600px) {
+    .network-controls {
         flex-direction: column;
-        margin-top: 0;
+        align-items: stretch;
     }
-
-    .table-column, .ping-column {
+    .network-controls input[type="text"],
+    .network-controls input[type="number"],
+    .network-controls select,
+    .network-controls button {
         flex: 1 1 100%;
-        max-height: none;       /* Let columns expand naturally on small screens */
-        margin-bottom: 80px;
-    }
-
-    table {
-        min-width: 100%;
+        min-width: 0;
+        margin-bottom: 6px;
     }
 }
